@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>INJE:REBORN</title>
+    <meta charset='utf-8'>
+    <!-- <meta name='viewport' content='width=device-width, initial-scale=1'> -->
+    {% block mobileView %}
+    {% endblock %}
+    
+
+    {% block header %}
+    {% endblock %}
+</head>
+
+<body style="background-color: #d6d6d6;">
+    
+    {% block contents %}
+    {% endblock %}
+    
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <script>
+        alert("{{ message.message }}")
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>

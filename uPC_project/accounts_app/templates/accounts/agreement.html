@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>회원가입 약관 동의</h2>
+  <form method="post" action="{% url 'agreement' %}">
+    {% csrf_token %}
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="agreement1" name="agreement1" required>
+      <label class="form-check-label" for="agreement1">약관 1에 동의합니다.</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="agreement2" name="agreement2" required>
+      <label class="form-check-label" for="agreement2">약관 2에 동의합니다.</label>
+    </div>
+    <button type="submit" name="signup" value="signup">약관에 동의하고 회원가입</button>
+  </form>
+{% endblock %}
