@@ -2,81 +2,111 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% bootstrap_css %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-  </head>
-  <body class="pt-5">
-    <div class="container">
-      {% if user.is_authenticated %}
-      <p>{{ user }}님, 안녕하세요.</p>
-      <form action="{% url 'logout' %}" method="POST">
-        {% csrf_token %}
-        <button>Logout</button>
-      </form>
-      <a href="{% url 'mypage' %}">mypage</a>
-
-      {% else %}
-
-      <nav
-        class="navbar navbar-expand-lg bg-body-tertiary navbar-expand-md navbar-dark bg-dark fixed-top"
-        style="padding: 12px"
-      >
-        <div class="container-fluid">
-          <div
-            class="collapse navbar-collapse justify-content-between"
-            id="collapsibleNavbar"
-          >
-            <ul class="navbar-nav">
-              <a class="navbar-brand" href="/">uPC</a>
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span class="navbar-toggler-icon"></span>
-              </button>
-            </ul>
-
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">판매하기</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">핫이슈</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">추천</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">게시판</a>
-              </li>
-            </ul>
-
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">마이페이지</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">로그인</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'signup' %}">회원가입</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      {% endif %} {% block content %} {% endblock %}
-    </div>
+    {% bootstrap_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {% bootstrap_javascript %}
-  </body>
+    <style>
+      .dropdown-menu, .dropdown-submenu{
+        background-color: gray;
+        color:#f9f06d;
+        border-radius: 10px;
+      }
+      .dropdown-menu li{
+        position: relative;
+        /* list-style-type: none; */
+      }
+      .dropdown-item{
+        color: rgba(255,255,255,0.8);
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .dropdown-menu .dropdown-submenu{
+        display: none; 
+        position: absolute; 
+        left: 101%; 
+        top: -7px;
+      }
+      .dropdown-menu > li:hover > .dropdown-submenu{
+        display: block;
+      }
+      /* .dropdown-menu > li:focus > .dropdown-submenu{
+        display: block;
+      } */ 
+    </style>
+</head>
+<body class="pt-5">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" style="padding-bottom: 10px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">uPC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" id="drop_cases" role="button" data-bs-toggle="dropdown">전체 카테고리</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">노트북/데스크탑</a>
+                  <ul class="dropdown-submenu">
+                    <li><a class="dropdown-item" href="#">노트북</a></li>
+                    <li><a class="dropdown-item" href="#">게이밍 노트북</a></li>
+                    <li><a class="dropdown-item" href="#">조립pc</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">게임/사운드</a>
+                  <ul class="dropdown-submenu">
+                    <li><a class="dropdown-item" href="#">게임기/게이밍가구</a></li>
+                    <li><a class="dropdown-item" href="#">사운드/스피커</a></li>
+                    <li><a class="dropdown-item" href="#">pc 헤드셋</a></li>
+                    <li><a class="dropdown-item" href="#">게이밍 이어폰</a></li>
+                    <li><a class="dropdown-item" href="#">이어폰/헤드폰</a></li>
+                  </ul>
+                </li>
+                <li><a class="dropdown-item" href="#">데스크탑</a></li>
+                <li><a class="dropdown-item" href="#">기타</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#">판매하기</a>
+            </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'mypage' %}">마이페이지</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">로그인</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'signup' %}">회원가입</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <form class="form-inline" action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-secondary" type="submit">Logout</button>
+                </form>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+</body>
 </html>
