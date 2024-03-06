@@ -1,5 +1,5 @@
 {% load django_bootstrap5 %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,102 +11,249 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {% bootstrap_javascript %}
     <style>
-      .dropdown-menu, .dropdown-submenu{
-        background-color: gray;
-        color:#f9f06d;
-        border-radius: 10px;
-      }
-      .dropdown-menu li{
-        position: relative;
-        /* list-style-type: none; */
-      }
-      .dropdown-item{
-        color: rgba(255,255,255,0.8);
-        display:flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+      :root {
+      --accent-color: #f3ff87;
+      --text-color: #f0f4f5;
+      --background-color: #0b002b;}
+
+      .body {
+      margin: 0;
+      font-family: 'Montserrat';}
+
+      li a {
+      text-decoration: none;
+      color: var(--text-color);}
+
+      .navbar {
+      display: flex;
+      flex-direction: column; /* 컬럼 방향으로 배치 */
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--background-color);
+      padding: 8px 12px;
+      position: fixed; /* 추가된 부분 */
+      width: 100%; /* 추가된 부분 */
+      top: 0; /* 추가된 부분 */
+      left: 0; /* 추가된 부분 */
+      z-index: 9999; /* 추가된 부분 */
       }
 
-      .dropdown-menu .dropdown-submenu{
-        display: none; 
-        position: absolute; 
-        left: 101%; 
-        top: -7px;
+      .nav_logo a{
+      font-size: 24px;
+      color: var(--text-color);
+      text-decoration: none;}
+
+      .nav_logo i {
+      color: var(--accent-color);}
+
+      .nav_menu {
+      display: flex;
+      list-style: none;
+      padding-left: 0;}
+
+      .nav_menu li {
+      padding: 8px 12px;}
+
+      .nav_menu li:hover {
+      color: var(--background-color);
+      background-color: var(--accent-color);
+      border-radius: 4px;}
+
+      .nav_menu li a:hover {
+      color: var(--background-color);}
+
+      .nav_icons {
+      display: flex;
+      color: #7dc0ff;
+      list-style: none;
+      padding-left: 0;}
+
+      .nav_icons li {
+      padding: 8px 5px;}
+
+      .navbar_toggleBtn {
+      display: none;
+      color:var(--text-color);
+      font-size: 24px;}
+
+      .search {
+      display: flex;
+      align-items: center;
+      padding: 10px 10px;
       }
-      .dropdown-menu > li:hover > .dropdown-submenu{
-        display: block;
+
+      .search input {
+      width: 415px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
       }
-      /* .dropdown-menu > li:focus > .dropdown-submenu{
-        display: block;
-      } */ 
+
+      .search button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      }
+
+      .search {
+      position: relative;
+      width: 450px;
+      }
+
+      input {
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      }
+
+      #gogo {
+      background-color: transparent; /* 배경색 제거 */
+      border: none; /* 테두리 제거 */
+      cursor: pointer; /* 커서를 포인터로 변경 */
+      position : absolute;
+      width: 17px;
+      top: 7px;
+      right: 15px;
+      margin: 0;
+      padding: 10px 10px;
+      }
+
+      .nav_logo{
+        margin-right: auto;
+      }
+
     </style>
 </head>
-<body class="pt-5">
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" style="padding-bottom: 10px;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">uPC</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+
+<body style="margin: 145px 0px">
+  <nav class="navbar">
+    <div class="search">
+      <div class="nav_logo">
+        <i class="fa-solid fa-star"></i>
+        <a href="/">uPC</a>
+      </div>
+      <form action="/products_app/search" method="GET">
+        <input type="text" name="query" value="" placeholder="검색어 입력">
+        <button type="submit" id="gogo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
         </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" id="drop_cases" role="button" data-bs-toggle="dropdown">전체 카테고리</a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="#">노트북/데스크탑</a>
-                  <ul class="dropdown-submenu">
-                    <li><a class="dropdown-item" href="#">노트북</a></li>
-                    <li><a class="dropdown-item" href="#">게이밍 노트북</a></li>
-                    <li><a class="dropdown-item" href="#">조립pc</a></li>
+      </form>
+    </div>
+    <ul class="nav_menu">
+      <li>
+        <!--세로형 3단 드롭다운 메뉴-->
+        <!-- <div id="menu2">
+          <ul class="M01">
+            <li><a href="#">대메뉴1</a>
+              <ul class="M02">
+                <li><a href="#">소메뉴1</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a class="dropdown-item" href="#">게임/사운드</a>
-                  <ul class="dropdown-submenu">
-                    <li><a class="dropdown-item" href="#">게임기/게이밍가구</a></li>
-                    <li><a class="dropdown-item" href="#">사운드/스피커</a></li>
-                    <li><a class="dropdown-item" href="#">pc 헤드셋</a></li>
-                    <li><a class="dropdown-item" href="#">게이밍 이어폰</a></li>
-                    <li><a class="dropdown-item" href="#">이어폰/헤드폰</a></li>
+                <li><a href="#">소메뉴2</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
                   </ul>
                 </li>
-                <li><a class="dropdown-item" href="#">데스크탑</a></li>
-                <li><a class="dropdown-item" href="#">기타</a></li>
+                <li><a href="#">소메뉴3</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
+                  </ul>
+                </li>
               </ul>
             </li>
-          </ul>
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">판매하기</a>
+            <li><a href="#">대메뉴2</a>
+              <ul class="M02">
+                <li><a href="#">소메뉴1</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">소메뉴2</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">소메뉴3</a>
+                  <ul class="M03">
+                    <li><a href="#">2단소메뉴1</a></li>
+                    <li><a href="#">2단소메뉴2</a></li>
+                    <li><a href="#">2단소메뉴3</a></li>
+                  </ul>
+                </li>
+              </ul>
             </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'mypage' %}">마이페이지</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'login' %}">로그인</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'signup' %}">회원가입</a>
-                </li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                <form class="form-inline" action="{% url 'logout' %}" method="post">
-                  {% csrf_token %}
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">Logout</button>
-                </form>
-                {% endif %}
+          <li><a href="#">대메뉴3</a>
+            <ul class="M02">
+              <li><a href="#">소메뉴1</a>
+                <ul class="M03">
+                  <li><a href="#">2단소메뉴1</a></li>
+                  <li><a href="#">2단소메뉴2</a></li>
+                  <li><a href="#">2단소메뉴3</a></li>
+                </ul>
+              </li>
+              <li><a href="#">소메뉴2</a>
+                <ul class="M03">
+                  <li><a href="#">2단소메뉴1</a></li>
+                  <li><a href="#">2단소메뉴2</a></li>
+                  <li><a href="#">2단소메뉴3</a></li>
+                </ul>
+              </li>
+              <li><a href="#">소메뉴3</a>
+                <ul class="M03">
+                  <li><a href="#">2단소메뉴1</a></li>
+                  <li><a href="#">2단소메뉴2</a></li>
+                  <li><a href="#">2단소메뉴3</a></li>
+                </ul>
+              </li>
             </ul>
-        </div>
-    </div>
-</nav>
+          </li>
+        </ul>
+      </div> -->
+      <li><a href="#" style="padding-top: 5px;">판매하기</a></li>
+
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'mypage' %}"  style="padding-top: 5px;">마이페이지</a>
+      </li>
+
+      {% else %}
+      <li>
+        <a href="{% url 'login' %}" style="padding-top: 5px;">로그인</a>
+      </li>
+      <li>
+        <a href="{% url 'signup' %}"  style="padding-top: 5px;">회원가입</a>
+      </li>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">로그아웃</a>
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+        </form>       
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 
 {% block content %}
 {% endblock %}
 
 </body>
-</html>
